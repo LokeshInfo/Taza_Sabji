@@ -34,8 +34,7 @@ public class Session_management {
     public static final String MyPREFERENCES  = "RIGHT_CHOICE";
     public static final String USERNAME = "username";
     public static final String MOBILE_NO = "mobileNo";
-
-
+    private static final String CHK_Version = "check_version";
 
     Context context;
 
@@ -114,6 +113,19 @@ public class Session_management {
     /**
      * Get stored session data
      */
+
+
+    public static Boolean getCHK_Version(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(MyPREFERENCES, 0);
+        return preferences.getBoolean(CHK_Version, false);
+    }
+
+    public static void setCHK_Version(Context context, Boolean value) {
+        SharedPreferences preferences = context.getSharedPreferences(MyPREFERENCES, 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(CHK_Version, value);
+        editor.commit();
+    }
 
     public HashMap<String, String> getUserDetails() {
         HashMap<String, String> user = new HashMap<String, String>();

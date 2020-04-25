@@ -5,6 +5,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -73,6 +75,7 @@ import com.tukuri.ics.HttpHandler;
 import com.tukuri.ics.RecyclerTouchListener;
 import com.tukuri.ics.AppController;
 import com.tukuri.ics.MainActivity;
+import com.tukuri.ics.Session_management;
 
 
 public class Home_fragment extends Fragment {
@@ -717,8 +720,28 @@ public class Home_fragment extends Fragment {
 
                         JSONObject dataob = jsonob.getJSONObject("data");
                         String update_status = dataob.getString("update_status");
+                        String update_version = dataob.getString("version");
+
                         if (update_status.equals("1")){
-                            dialog_update_App();
+
+                            PackageManager manager = getActivity().getPackageManager();
+                            PackageInfo info = null;
+                            try {
+                                info = manager.getPackageInfo(
+                                        getActivity().getPackageName(), 0);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            String crr_version = info.versionName;
+                            double latest_ver = Double.parseDouble(update_version);
+                            double current_ver = Double.parseDouble(crr_version);
+
+                            if(latest_ver>current_ver && Session_management.getCHK_Version(getActivity())){
+                                Session_management.setCHK_Version(getActivity(),false);
+                                dialog_update_App();
+                            }
+                            else{         }
+
                         } else{                      }
 
                     }else{
@@ -752,7 +775,7 @@ public class Home_fragment extends Fragment {
         b_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), ">>> Updating App Now <<<", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), ">>> Update App Now <<<", Toast.LENGTH_SHORT).show();
                 final String appPackageName = getActivity().getPackageName(); // getPackageName() from Context or Activity object
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));

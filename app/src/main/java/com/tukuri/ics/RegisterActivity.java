@@ -276,7 +276,7 @@ public class RegisterActivity extends AppCompatActivity implements
                         AppPreference.setMobile(RegisterActivity.this,user_phone);
                         AppPreference.setUser_Id(RegisterActivity.this,user_id);
                         sessionManagement.createLoginSession(user_phone);
-
+                        new SEND_TOKEN().execute();
                         Intent in = new Intent(RegisterActivity.this, MainActivity.class);
                         startActivity(in);
                         finish();
@@ -318,133 +318,112 @@ public class RegisterActivity extends AppCompatActivity implements
     }
 
 
+
+
+    private class SEND_TOKEN extends AsyncTask<String, String, String> {
+
+        ProgressDialog dialog;
+
+        protected void onPreExecute() {
+//            dialog = new ProgressDialog(MainActivity_drawer.this);
+//            dialog.show();
+        }
+
+        protected String doInBackground(String... arg0) {
+
+            try {
+
+                URL url = new URL(BaseURL.BASEURL2+"/index.php/Api/test_fcm");
+
+                JSONObject postDataParams = new JSONObject();
+                postDataParams.put("user_id", AppPreference.getUser_Id(RegisterActivity.this));
+                postDataParams.put("token",AppPreference.getUserToken(RegisterActivity.this));
+
+                Log.e("postDataParams", postDataParams.toString());
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(15000 /* milliseconds*/);
+                conn.setConnectTimeout(15000  /*milliseconds*/);
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write(getPostDataString(postDataParams));
+
+                writer.flush();
+                writer.close();
+                os.close();
+
+                int responseCode = conn.getResponseCode();
+
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+
+                    BufferedReader r = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuilder result = new StringBuilder();
+                    String line;
+                    while ((line = r.readLine()) != null) {
+                        result.append(line);
+                    }
+                    r.close();
+                    return result.toString();
+
+                } else {
+                    return new String("false : " + responseCode);
+                }
+            } catch (Exception e) {
+                return new String("Exception: " + e.getMessage());
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (result != null) {
+//                dialog.dismiss();
+
+                // JSONObject jsonObject = null;
+                Log.e("SendJsonDataToServer>>>", result.toString());
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        public String getPostDataString(JSONObject params) throws Exception {
+
+            StringBuilder result = new StringBuilder();
+            boolean first = true;
+
+            Iterator<String> itr = params.keys();
+
+            while (itr.hasNext()) {
+
+                String key = itr.next();
+                Object value = params.get(key);
+
+                if (first)
+                    first = false;
+                else
+                    result.append("&");
+
+                result.append(URLEncoder.encode(key, "UTF-8"));
+                result.append("=");
+                result.append(URLEncoder.encode(value.toString(), "UTF-8"));
+
+            }
+            return result.toString();
+        }
+    }
+
+
     //********************************************************
 
 }
 
-
-/// Send OTP to MAIL
-/*
-class SendDataToServer extends AsyncTask<String, String, String> {
-
-    ProgressDialog dialog;
-
-    protected void onPreExecute() {
-        dialog = new ProgressDialog(RegisterActivity.this);
-        dialog.show();
-
-    }
-
-    protected String doInBackground(String... arg0) {
-
-        try {
-
-            URL url = new URL("https://ihisaab.in/MyTukari/index.php/Api/sentotp");
-            // http://axomiyagohona.com/grocery-store/
-            JSONObject postDataParams = new JSONObject();
-            postDataParams.put("user_mobile", getphone);
-            postDataParams.put("user_email", getemail);
-
-            Log.e("postDataParams", postDataParams.toString());
-
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(15000  milliseconds);
-            conn.setConnectTimeout(15000  milliseconds);
-            conn.setRequestMethod("POST");
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
-
-            OutputStream os = conn.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(os, "UTF-8"));
-            writer.write(getPostDataString(postDataParams));
-
-            writer.flush();
-            writer.close();
-            os.close();
-
-            int responseCode = conn.getResponseCode();
-
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
-
-                BufferedReader r = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                StringBuilder result = new StringBuilder();
-                String line;
-                while ((line = r.readLine()) != null) {
-                    result.append(line);
-                }
-                r.close();
-                return result.toString();
-
-            } else {
-                return new String("false : " + responseCode);
-            }
-        } catch (Exception e) {
-            return new String("Exception: " + e.getMessage());
-        }
-
-    }
-
-    @Override
-    protected void onPostExecute(String result) {
-        if (result != null) {
-            dialog.dismiss();
-
-            // JSONObject jsonObject = null;
-            Log.e("SendJsonDataToServer>>>", result.toString());
-            try {
-                JSONObject jsonObject = new JSONObject(result);
-                Boolean responce = jsonObject.getBoolean("responce");
-                String message = jsonObject.getString("message");
-
-                if (responce)
-                {
-                    Intent otpin = new Intent(RegisterActivity.this, NewRegistation.class);
-                    otpin.putExtra("name",getname);
-                    otpin.putExtra("mail",getemail);
-                    otpin.putExtra("phone",getphone);
-                    otpin.putExtra("pass",getpassword);
-                    startActivity(otpin);
-                    Toast.makeText(RegisterActivity.this, "OTP sent to your Mail id...",Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Toast.makeText(RegisterActivity.this, ""+message, Toast.LENGTH_SHORT).show();
-                }
-
-
-                Log.e(">>>>", jsonObject.toString() + " " + responce + " " + message);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public String getPostDataString(JSONObject params) throws Exception {
-
-        StringBuilder result = new StringBuilder();
-        boolean first = true;
-
-        Iterator<String> itr = params.keys();
-
-        while (itr.hasNext()) {
-
-            String key = itr.next();
-            Object value = params.get(key);
-
-            if (first)
-                first = false;
-            else
-                result.append("&");
-
-            result.append(URLEncoder.encode(key, "UTF-8"));
-            result.append("=");
-            result.append(URLEncoder.encode(value.toString(), "UTF-8"));
-
-        }
-        return result.toString();
-    }
-}*/
-
- /////////////////////////////

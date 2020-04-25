@@ -42,6 +42,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
         sessionManagement = new Session_management(com.tukuri.ics.SplashActivity.this);
+        Session_management.setCHK_Version(SplashActivity.this,true);
 
         Thread background = new Thread() {
             public void run() {

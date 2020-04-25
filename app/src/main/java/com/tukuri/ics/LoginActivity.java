@@ -257,6 +257,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Log.e(">>>>", jsonObject.toString() + " " + response + " " + "");
 
                     if (response.equalsIgnoreCase("true")) {
+                        new SEND_TOKEN().execute();
                         AppPreference.setName(LoginActivity.this,user_fullname);
                         AppPreference.setMobile(LoginActivity.this,user_phone);
                         AppPreference.setUser_Id(LoginActivity.this,user_id);
@@ -264,7 +265,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Log.e("user_fullname",user_fullname);
                         Log.e("user_phone",user_phone);
                         et_email.setText("");
-                        new SEND_TOKEN().execute();
 
 
 //                          sessionManagement.createLoginSession(user_id,user_fullname,user_email,Password);
@@ -321,7 +321,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             try {
 
-                URL url = new URL(BaseURL.BASEURL2+"/Api/test_fcm");
+                URL url = new URL(BaseURL.BASEURL2+"/index.php/Api/test_fcm");
 
                 JSONObject postDataParams = new JSONObject();
                 postDataParams.put("user_id", AppPreference.getUser_Id(LoginActivity.this));

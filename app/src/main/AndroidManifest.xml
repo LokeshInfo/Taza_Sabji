@@ -82,6 +82,7 @@
         <activity
             android:name=".ForgotActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".ContinueActivity"
             android:theme="@style/AppTheme.NoActionBar" />

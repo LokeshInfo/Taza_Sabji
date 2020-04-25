@@ -48,10 +48,6 @@ import com.tukuri.ics.Fragment.My_order_fragment;
 import com.tukuri.ics.Fragment.LocationFragment;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.github.inflationx.calligraphy3.CalligraphyConfig;
-import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
-import io.github.inflationx.viewpump.ViewPump;
-import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -222,18 +218,8 @@ public class MainActivity extends AppCompatActivity
             fireReg.RegisterUser(sessionManagement.getUserDetails().get(BaseURL.KEY_ID));*/
         }
 
-        ViewPump.init(ViewPump.builder()
-                .addInterceptor(new CalligraphyInterceptor(
-                        new CalligraphyConfig.Builder()
-                                .setDefaultFontPath("fonts/Roboto-Regular.ttf")
-                                .setFontAttrId(R.attr.fontPath)
-                                .build())).build());
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
-    }
 
     public void MenuIC()
     {  toggle.setHomeAsUpIndicator(R.drawable.hamburg);

@@ -17,9 +17,6 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="tx_italic" parent="android:Widget.TextView">
-        <item name="fontPath">fonts/Peaches.otf</item>
-    </style>
 
     <style name="datepicker" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorPrimary">@color/colorPrimary</item>

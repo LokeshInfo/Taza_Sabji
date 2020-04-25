@@ -10,12 +10,6 @@ import com.android.volley.toolbox.Volley;
 
 import com.tukuri.ics.ConnectivityReceiver;
 
-import io.github.inflationx.calligraphy3.CalligraphyConfig;
-import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
-import io.github.inflationx.viewpump.ViewPump;
-import io.github.inflationx.viewpump.ViewPumpContextWrapper;
-
-
 public class AppController extends Application {
 
     public static final String TAG = AppController.class.getSimpleName();
@@ -28,17 +22,6 @@ public class AppController extends Application {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-        ViewPump.init(ViewPump.builder()
-                .addInterceptor(new CalligraphyInterceptor(
-                        new CalligraphyConfig.Builder()
-                                .setDefaultFontPath("fonts/Roboto-Regular.ttf")
-                                .setFontAttrId(R.attr.fontPath)
-                                .build())).build());
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
     }
 
     public static synchronized AppController getInstance() {
