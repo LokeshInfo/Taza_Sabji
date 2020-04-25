@@ -8,14 +8,14 @@
     tools:context="com.tukuri.ics.SplashActivity"
     android:gravity="center_vertical"
     android:theme="@android:style/Theme.Translucent"
-    android:background="#fed500"
+    android:background="@color/colorPrimary"
     android:orientation="vertical">
     <!--android:background="@drawable/nnn"-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#99E4CC94"
+        android:background="@color/colorPrimary"
         android:gravity="center"
         android:orientation="vertical">
         <!--android:background="#9988A86C"-->
@@ -31,10 +31,11 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/img"
             android:layout_width="200dp"
-            android:layout_height="2000dp"
+            android:layout_height="200dp"
             android:layout_gravity="center_horizontal"
             android:layout_centerHorizontal="true"
             android:src="@drawable/app_icon"
+            app:civ_circle_background_color="#CAF0CA"
             app:civ_border_color="#ffffff"
             app:civ_border_width="2dp" />
 

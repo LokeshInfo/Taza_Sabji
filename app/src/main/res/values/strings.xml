@@ -178,4 +178,6 @@
     <string name="product_highlight">rrrrrrrrrrrrrrrrr rrrrrrrrrrrrrrrrrrrrrr</string>
     <string name="title_activity_maps">Map</string>
 
+    <string name="delivery_time_over">Delivery Time Closed , Please select next date for more Delivery Time.</string>
+
 </resources>

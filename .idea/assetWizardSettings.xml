@@ -51,7 +51,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="scalingPercent" value="91" />
+                                                <entry key="scalingPercent" value="133" />
                                                 <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
@@ -64,7 +64,7 @@
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
                                       <entry key="backgroundColor" value="ffffff" />
-                                      <entry key="foregroundImage" value="E:\Projects_Docs\Taza Sabji.png" />
+                                      <entry key="foregroundImage" value="E:\Projects_Docs\taza_sabji_logo.jpg" />
                                       <entry key="outputName" value="app_ilogo" />
                                     </map>
                                   </option>

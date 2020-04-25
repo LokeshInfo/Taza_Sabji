@@ -166,7 +166,7 @@
                         android:id="@+id/btn_cart_checkout"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        android:background="@color/colorPrimary"
+                        android:background="#fe7d0d"
                         android:drawableRight="@drawable/right_arrow"
                         android:padding="@dimen/space_5"
                         android:text="Continue"

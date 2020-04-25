@@ -589,7 +589,6 @@ public class Home_fragment extends Fragment {
             dialog.setCancelable(true);
             dialog.show();
             super.onPreExecute();
-
         }
 
         @Override
