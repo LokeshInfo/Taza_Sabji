@@ -257,10 +257,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Log.e(">>>>", jsonObject.toString() + " " + response + " " + "");
 
                     if (response.equalsIgnoreCase("true")) {
-                        new SEND_TOKEN().execute();
                         AppPreference.setName(LoginActivity.this,user_fullname);
                         AppPreference.setMobile(LoginActivity.this,user_phone);
                         AppPreference.setUser_Id(LoginActivity.this,user_id);
+                        new SEND_TOKEN().execute();
                         sessionManagement.createLoginSession(user_phone);
                         Log.e("user_fullname",user_fullname);
                         Log.e("user_phone",user_phone);

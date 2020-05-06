@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -47,8 +48,10 @@ public  class Map_Fragment extends Fragment
 
     private GoogleMap googleMap;
     private Location locationC;
+    private ScrollView scrollView;
 
-    public Map_Fragment() {
+    public Map_Fragment(ScrollView scrll) {
+        this.scrollView = scrll;
     }
 
 
@@ -59,7 +62,6 @@ public  class Map_Fragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         this.mMap = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.frag_map);
-
         Check_Permission();
 
         return view;
@@ -215,6 +217,8 @@ public  class Map_Fragment extends Fragment
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
+
+
 }
   /*  private void enableMyLocationIfPermitted() {
         if (ContextCompat.checkSelfPermission(getActivity(),

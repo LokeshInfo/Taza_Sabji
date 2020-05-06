@@ -1,6 +1,7 @@
 package com.tukuri.ics.Fragment;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.NoConnectionError;
@@ -43,6 +45,7 @@ public class View_time_fragment extends Fragment {
     private static String TAG = View_time_fragment.class.getSimpleName();
 
     private RecyclerView rv_time;
+    private TextView tv_content;
 
     private List<String> time_list = new ArrayList<>();
     private List<Category_model> category_modelList = new ArrayList<>();
@@ -72,6 +75,7 @@ public class View_time_fragment extends Fragment {
         sessionManagement = new Session_management(getActivity());
 
         rv_time = (RecyclerView) view.findViewById(R.id.rv_times);
+        tv_content = view.findViewById(R.id.tv_content);
         rv_time.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         getdate = getArguments().getString("date");
@@ -117,11 +121,17 @@ public class View_time_fragment extends Fragment {
         Map<String, String> params = new HashMap<String, String>();
         params.put("date",date);
 
+        final ProgressDialog dialog = new ProgressDialog(getActivity());
+        dialog.setMessage("Processing");
+        dialog.setCancelable(true);
+        dialog.show();
+
         CustomVolleyJsonRequest jsonObjReq = new CustomVolleyJsonRequest(Request.Method.POST,
                 BaseURL.GET_TIME_SLOT, params, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
+                dialog.dismiss();
                 Log.d(TAG, response.toString());
 
                 try {
@@ -131,6 +141,11 @@ public class View_time_fragment extends Fragment {
                         for(int i=0;i<response.getJSONArray("times").length();i++) {
                             time_list.add(""+response.getJSONArray("times").get(i));
                         }
+                     if(response.getJSONArray("times").length()==0){
+                         tv_content.setVisibility(View.VISIBLE);
+                     }else{
+                         tv_content.setVisibility(View.GONE);
+                     }
 
                         View_time_adapter adapter = new View_time_adapter(time_list);
                         rv_time.setAdapter(adapter);
@@ -145,6 +160,7 @@ public class View_time_fragment extends Fragment {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                dialog.dismiss();
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     Toast.makeText(getActivity(), getResources().getString(R.string.connection_time_out), Toast.LENGTH_SHORT).show();

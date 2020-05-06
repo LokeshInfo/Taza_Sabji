@@ -18,7 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.multidex.BuildConfig;
+import com.tukuri.ics.BuildConfig;
 import androidx.viewpager.widget.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;

@@ -16,11 +16,15 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +42,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.github.chuross.library.ExpandableLayout;
 import com.tukuri.ics.Config.BaseURL;
 import com.tukuri.ics.LoginActivity;
 import com.tukuri.ics.Model.Delivery_address_model;
@@ -70,6 +75,8 @@ public class Add_delivery_address_fragment extends Fragment implements View.OnCl
     private ArrayList<Delivery_address_model> delivery_address_modelList = new ArrayList<Delivery_address_model>();
     String getlandmark,getcity,getstate,gethouseno;
     private String Faddress="---", Flatitude, Flongitude;
+    private ScrollView scroll_view;
+    private ExpandableLayout expandable_lyt;
 
     public Add_delivery_address_fragment() {
         // Required empty public constructor
@@ -90,6 +97,8 @@ public class Add_delivery_address_fragment extends Fragment implements View.OnCl
 
         sessionManagement = new Session_management(getActivity());
 
+        scroll_view = view.findViewById(R.id.scrollView1);
+        expandable_lyt = view.findViewById(R.id.expandable_lyt);
         et_phone = (EditText) view.findViewById(R.id.et_add_adres_phone);
         et_name = (EditText) view.findViewById(R.id.et_add_adres_name);
         et_pin = (EditText) view.findViewById(R.id.et_add_adres_pin);
@@ -114,7 +123,7 @@ public class Add_delivery_address_fragment extends Fragment implements View.OnCl
 
         androidx.fragment.app.FragmentManager fragmentManager = ((MainActivity) getActivity()).getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.map_fragment , new Map_Fragment()).commit();
+        fragmentTransaction.replace(R.id.map_fragment , new Map_Fragment(scroll_view)).commit();
 
         String getsocity_name = sessionManagement.getUserDetails().get(BaseURL.KEY_SOCITY_NAME);
 
@@ -167,6 +176,19 @@ public class Add_delivery_address_fragment extends Fragment implements View.OnCl
         });
 
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(localBroadcastRec, new IntentFilter("StringAddr"));
+
+      /*  scroll_view.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                int scrollY = scroll_view.getScrollY(); //for verticalScrollView
+                if (scrollY == 0){
+                    expandable_lyt.expand();
+                    Log.e("TOP "," TOP -------------");}
+                else{
+                    expandable_lyt.collapse();
+                    Log.e("Not "," Not XXXXXXXX");}
+            }
+        });*/
 
         return view;
     }
@@ -485,5 +507,7 @@ public class Add_delivery_address_fragment extends Fragment implements View.OnCl
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
     }
+
+
 }
 
